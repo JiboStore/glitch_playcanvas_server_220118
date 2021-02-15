@@ -1,5 +1,4 @@
 dependencies:
-  cors: 2.8.5
   express: 4.17.1
   socket.io: 3.1.1
 packages:
@@ -521,6 +520,5 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
-  cors: ^2.8.5
   express: ^4.17.1
   socket.io: ^3.1.1

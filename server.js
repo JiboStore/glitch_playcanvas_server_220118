@@ -39,6 +39,7 @@ io.sockets.on('connection', function(socket) {
 
             socket.emit ('playerData', {id: id, players: players});
             socket.broadcast.emit ('playerJoined', newPlayer);
+        });
 
         socket.on ('positionUpdate', function (data) {
                 if(!players[data.id]) return;
@@ -46,7 +47,6 @@ io.sockets.on('connection', function(socket) {
                 players[data.id].y = data.y;
                 players[data.id].z = data.z;
 
-            console.log(data);
             socket.broadcast.emit ('playerMoved', data);
         });
 
@@ -55,10 +55,9 @@ io.sockets.on('connection', function(socket) {
             delete players[socket.id];
             // Update clients with the new player killed 
             socket.broadcast.emit('killPlayer',socket.id);
-          })
         });
     });
 });
 
-console.log ('Server started.');
+console.log ('Server started');
 server.listen(3000);
