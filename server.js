@@ -1,34 +1,37 @@
-// server.js
-// where your node app starts
+var server = require('http').createServer();
 
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
-const express = require("express");
-const app = express();
+var options={
+ cors:true,
+ origins:["http://127.0.0.1:5347"],
+}
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
+var io = require('socket.io')(server);
+var players = {};
 
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
-app.use(express.static("public"));
+function Player (id) {
+    this.id = id;
+    this.x = 0;
+    this.y = 0;
+    this.z = 0;
+    this.entity = null;
+}
 
-// https://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+io.sockets.on('connection', function(socket) {
+    socket.on ('initialize', function () {
+        var id = socket.id;
+        var newPlayer = new Player (id);
+        // Creates a new player object with a unique ID number.
+
+        players[id] = newPlayer;
+        // Adds the newly created player to the array.
+
+        socket.emit ('playerData', {id: id, players: players});
+        // Sends the connecting client his unique ID, and data about the other players already connected.
+
+        socket.broadcast.emit ('playerJoined', newPlayer);
+        // Sends everyone except the connecting player data about the new player.
+    });
 });
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
-});
-
-// listen for requests :)
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+console.log ('Server started.');
+server.listen(3000);
