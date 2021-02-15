@@ -1,11 +1,12 @@
 var server = require('http').createServer();
-
-var options={
- cors:true,
- origins:["http://127.0.0.1:5347"],
+var options = {
+  cors: {
+    origin: "https://launch.playcanvas.com",
+    methods: ["GET", "POST"]
+  }
 }
 
-var io = require('socket.io')(server);
+var io = require('socket.io')(server, options);
 var players = {};
 
 function Player (id) {
