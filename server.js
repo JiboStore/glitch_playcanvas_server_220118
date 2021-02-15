@@ -1,9 +1,6 @@
 var server = require('http').createServer();
 var options = {
-  cors: {
-    origin: "https://launch.playcanvas.com",
-    methods: ["GET", "POST"]
-  }
+  cors: true
 }
 
 var io = require('socket.io')(server, options);
