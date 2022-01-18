@@ -29,7 +29,7 @@ io.sockets.on('connection', function(socket) {
 
         socket.broadcast.emit ('playerJoined', newPlayer);
         // Sends everyone except the connecting player data about the new player.
-      
+
         socket.on ('initialize', function () {
             var id = socket.id;
             var newPlayer = new Player (id);
@@ -51,11 +51,11 @@ io.sockets.on('connection', function(socket) {
         socket.on('disconnect',function(){
             if(!players[socket.id]) return;
             delete players[socket.id];
-            // Update clients with the new player killed 
+            // Update clients with the new player killed
             socket.broadcast.emit('killPlayer',socket.id);
         });
     });
 });
 
 console.log ('Server started');
-server.listen(3000);
+server.listen(3001);
